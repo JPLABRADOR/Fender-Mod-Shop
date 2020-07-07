@@ -1,6 +1,7 @@
 var fender = {}
 var modData = require('../testAssets/fenderModShopArray')
 var editData = require('../testAssets/fenderModShopEditArray')
+var quantityData = require('../testAssets/fenderModShopQuantityArray')
 
 module.exports = {
     beforeEach: browser => {
@@ -12,14 +13,14 @@ module.exports = {
         fender.end()
     },
 
-    'Test 1 - UI Functionality on the Jazz Bass Mod Shop Page': browser => {
+    'Test 1 - Verify Jazz Bass Mod Shop Page UI Functionality': browser => {
         fender
             .navigateToModPage()
             .checkBassPageFunctionality()
             .refreshAndVerifyCartQuantity("1")
     },
 
-    'Test 2 - Add and Remove Basses': browser => {
+    'Test 2 - Verify Shopping Cart Details and Remove From Cart Functionality': browser => {
         fender
             .navigateToModPage()
 
@@ -32,20 +33,38 @@ module.exports = {
             .refreshAndVerifyCartQuantity("2")
             .navigateToShoppingCart()
             .verify2BassShoppingCart()
+            .deleteBassShoppingCart()
+            .verifyBassShoppingCart()
+            .deleteBassShoppingCart()
             .verifyEmptyShoppingCart()
     },
     
-    'Test 3 - Add, Edit and Remove Basses': browser => {
+    'Test 3 - Verify Cart Quantity Selector Functionality': browser => {
         fender
             .navigateToModPage()
-        fender
             .bassMod(editData[0])
-        fender
             .refreshAndVerifyCartQuantity("1")
             .navigateToShoppingCart()
             .verifyBassShoppingCart()
-            .navigateToEditBassReset(editData[0])
-            .verifyEmptyShoppingCart()
+
+        quantityData.forEach(test => {
+        fender
+            .verifyQuantitySelector(test)
+        })
+
+        fender
+            .verifyBassShoppingCart()
+    },
+    
+    'Test 4 - Verify Edit and Update Cart Functionality': browser => {
+        fender
+            .navigateToModPage()
+            .bassMod(editData[0])
+            .refreshAndVerifyCartQuantity("1")
+            .navigateToShoppingCart()
+            .editBassWithReset(editData[0])
+            .editBassColor()
+            .updateCart()
     }
 
 }
