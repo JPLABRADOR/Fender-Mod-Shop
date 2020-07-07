@@ -1,5 +1,4 @@
 var bassModCommands = {
-
     checkBassPageFunctionality: function () {
         this
             // Bass Angle buttons: Front, Back, 3/4 View, Body, Neck
