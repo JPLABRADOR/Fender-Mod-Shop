@@ -24,21 +24,17 @@ module.exports = {
         fender.end()
     },
     'Test 1 - Verify Jazz Bass Mod Shop Page UI Functionality': browser => {
-        fender
-            .verifyBassPageUI(angleData, orienData, bodData, neckData1, 
+        fender.verifyBassPageUI(angleData, orienData, bodData, neckData1, 
                 neckData2, fboardData, pickguardData, pickupsData1, 
                 pickupsData2)
     },
     'Test 2 - Verify Cart Details and Remove From Cart Functionality': browser => {
-        fender
-            .verifyCartDetailsAndRemoval(modData1, modData2)
+        fender.verifyCartDetailsAndRemoval(modData1, modData2)
     },
     'Test 3 - Verify Cart Quantity Selector Functionality': browser => {
-        fender
-            .verifyCartQuantitySelector(editData, quantityData)
+        fender.verifyCartQuantitySelector(editData, quantityData)
     },
     'Test 4 - Verify Edit and Update Cart Functionality': browser => {
-        fender
-            .verifyEditAndUpdateCart(editData)
+        fender.verifyEditAndUpdateCart(editData)
     }
 }
