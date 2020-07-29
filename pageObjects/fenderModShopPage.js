@@ -1,496 +1,715 @@
 var bassModCommands = {
-    checkBassPageFunctionality: function () {
+    bassAngleButtonsSelection: function (data) {
+        var self = this
         this
-            // Bass Angle buttons: Front, Back, 3/4 View, Body, Neck
-            .click("@bassAngleFront")
-            .click("@bassAngleBack")
-            .click("@bassAngle34View")
-            .click("@bassAngleBody")
-            .click("@bassAngleNeck")
+            data.forEach(test => {
+                this
+                    .click(test.bassAngleType)
 
-            // Orientation
-            .getLocationInView("@shoppingCartLink")
-            .waitForElementVisible("@orientation")
+                    .getAttribute(test.bassAngleType, 'class', function (result) {
+                        var bassAnglePick = result.value
+
+                        if (bassAnglePick === test.bassAngleAttribute) {
+                            self
+                                .verify.attributeContains(test.bassAngleType, 'class', 'fc-view-active', 
+                                    test.bassAngleMessage)
+                        } else {
+                            self
+                                .verify.not.attributeContains(test.bassAngleType, 'class', 'fc-view-active', 
+                                    "BUG: Incorrect bass image selected: " + test.bassAngleChoiceString)
+                        }
+
+                    })
+            })
+        return this
+    },
+    navigateToOrientationSelection: function () {
+        this
+            .moveToElement("@fenderBrandLogo", undefined, undefined)
+            .waitForElementVisible("@orientation", 
+                "VERIFIED: 'Orientation' attribute header present")
             .click("@orientation")
-            .click("@orientationRight")
-            .click("@orientationLeft")
+        return this
+    },
+    orientationSelection: function (data) {
+        var self = this
+        this
+            data.forEach(test => {
+                this
+                    .click(test.orienType)
 
-            // Body
-            .waitForElementVisible("@body")
+                    .getText(test.orienChoice, function (result) {
+                        var orienPick = result.value
+
+                        if (orienPick === test.orienChoiceString) {
+                            self
+                                .verify.containsText(test.orienChoice, test.orienChoiceString, 
+                                    "VERIFIED: " + test.orienChoiceString + " orientation choice")
+                        } else {
+                            self
+                                .verify.not.containsText(test.orienChoice, test.orienChoiceString, 
+                                    "BUG: " + test.orienChoiceString + " incorrect orientation choice")
+                        }
+
+                    })
+            })
+        return this
+    },
+    navigateToBodySelection: function () {
+        this
+            .waitForElementVisible("@body", 
+                "VERIFIED: 'Body' attribute header visible")
             .click("@body")
-            .getLocationInView("@reset")
-            .waitForElementNotVisible("@orientationText")
-            .waitForElementPresent("@bodyMenuActive")
+            .moveToElement("@reset", undefined, undefined)
+            .waitForElementNotVisible("@orientationText", 
+                "VERIFIED: 'Orientation' flyout panel header hidden")
+            .waitForElementPresent("@bodyMenuActive", 
+                "VERIFIED: 'Body' flyout menu active")
+        return this
+    },
+    bodySelection: function (data) {
+        var self = this
+        this
+            data.forEach(test => {
+                this
+                    .click(test.bodyType)
 
-            .click("@bodyIncaSilver")
-            .verify.containsText("@bodyChoiceIncaSilver", "Inca Silver", "Verified: Inca Silver Swatch Choice")
+                    .getText(test.bodyChoice, function (result) {
+                        var bodyPick = result.value
+
+                        if (bodyPick === test.bodyChoiceString) {
+                            self
+                                .verify.containsText(test.bodyChoice, test.bodyChoiceString, 
+                                    "VERIFIED: " + test.bodyChoiceString + " swatch choice")
+                        } else {
+                            self
+                                .verify.not.containsText(test.bodyChoice, test.bodyChoiceString, 
+                                    "BUG: " + test.bodyChoiceString + " incorrect swatch choice")
+                        }
  
-            .click("@bodyCharcoalFrostMetallic")
-            .verify.containsText("@bodyChoiceCharcoalFrostMetallic", "Charcoal Frost Metallic", "Verified: Charcoal Frost Metallic Swatch Choice")
-
-            .click("@bodyMysticSeafoamGreen")
-            .verify.containsText("@bodyChoiceMysticSeafoamGreen", "Mystic Seafoam Green", "Verified: Mystic Seafoam Green Swatch Choice")
-
-            .click("@bodySilverburst")
-            .verify.containsText("@bodyChoiceSilverburst", "Silverburst", "Verified: Silverburst Swatch Choice")
-
-            .click("@bodyTobaccoBurst")
-            .verify.containsText("@bodyChoiceTobaccoBurst", "Tobacco Burst", "Verified: Tobacco Burst Swatch Choice")
-
-            .click("@bodyMysticAztecGold")
-            .verify.containsText("@bodyChoiceMysticAztecGold", "Mystic Aztec Gold", "Verified: Mystic Aztec Gold Swatch Choice")
-
-            .click("@bodySonicBlue")
-            .verify.containsText("@bodyChoiceSonicBlue", "Sonic Blue", "Verified: Sonic Blue Swatch Choice")
-
-            .click("@bodyPenny")
-            .verify.containsText("@bodyChoicePenny", "Penny", "Verified: Penny Swatch Choice")
-
-            .click("@bodyAutumnBlazeMetallic")
-            .verify.containsText("@bodyChoiceAutumnBlazeMetallic", "Autumn Blaze Metallic", "Verified: Autumn Blaze Metallic Swatch Choice")
-
-            .click("@bodyFiestaRed")
-            .verify.containsText("@bodyChoiceFiestaRed", "Fiesta Red", "Verified: Fiesta Red Swatch Choice")
-
-            .click("@bodyAntiqueOlive")
-            .verify.containsText("@bodyChoiceAntiqueOlive", "Antique Olive", "Verified: Antique Olive Swatch Choice")
-
-            .click("@bodySonicGray")
-            .verify.containsText("@bodyChoiceSonicGray", "Sonic Gray", "Verified: Sonic Gray Swatch Choice")
-
-            .click("@bodyDakotaRed")
-            .verify.containsText("@bodyChoiceDakotaRed", "Dakota Red", "Verified: Dakota Red Swatch Choice")
-
-            .click("@bodySunsetMetallic")
-            .verify.containsText("@bodyChoiceSunsetMetallic", "Sunset Metallic", "Verified: Sunset Metallic Swatch Choice")
-
-            .click("@bodyHotRodRed")
-            .verify.containsText("@bodyChoiceHotRodRed", "Hot Rod Red", "Verified: Hot Rod Red Swatch Choice")
-
-            .click("@bodyIceBlueMetallic")
-            .verify.containsText("@bodyChoiceIceBlueMetallic", "Ice Blue Metallic", "Verified: Ice Blue Metallic Swatch Choice")
-
-            .click("@bodySherwoodGreen")
-            .verify.containsText("@bodyChoiceSherwoodGreen", "Sherwood Green", "Verified: Sherwood Green Swatch Choice")
-
-            .click("@bodyWalnut")
-            .verify.containsText("@bodyChoiceWalnut", "Walnut", "Verified: Walnut Swatch Choice")
-
-            .click("@bodyMysticIceBlue")
-            .verify.containsText("@bodyChoiceMysticIceBlue", "Mystic Ice Blue", "Verified: Mystic Ice Blue Swatch Choice")
-
-            .click("@bodyBordeauxMetallic")
-            .verify.containsText("@bodyChoiceBordeauxMetallic", "Bordeaux Metallic", "Verified: Bordeaux Metallic Swatch Choice")
-
-            .click("@bodyShellPink")
-            .verify.containsText("@bodyChoiceShellPink", "Shell Pink", "Verified: Shell Pink Swatch Choice")
-
-            .click("@bodySatinBlack")
-            .verify.containsText("@bodyChoiceSatinBlack", "Satin Black", "Verified: Satin Black Swatch Choice")
-
-            .click("@bodyOceanTurquoise")
-            .verify.containsText("@bodyChoiceOceanTurquoise", "Ocean Turquoise", "Verified: Ocean Turquoise Swatch Choice")
-
-            .click("@bodySkyburstMetallic")
-            .verify.containsText("@bodyChoiceSkyburstMetallic", "Skyburst Metallic", "Verified: Skyburst Metallic Swatch Choice")
-
-            .click("@bodyDesertSand")
-            .verify.containsText("@bodyChoiceDesertSand", "Desert Sand", "Verified: Desert Sand Swatch Choice")
-
-            .click("@bodyBlack")
-            .verify.containsText("@bodyChoiceBlack", "Black", "Verified: Black Swatch Choice")
-
-            .click("@bodyVintageBlonde")
-            .verify.containsText("@bodyChoiceVintageBlonde", "Vintage Blonde", "Verified: Vintage Blonde Swatch Choice")
-
-            .click("@bodyOlympicWhite")
-            .verify.containsText("@bodyChoiceOlympicWhite", "Olympic White", "Verified: Olympic White Swatch Choice")
-
-            .click("@bodyLakePlacidBlue")
-            .verify.containsText("@bodyChoiceLakePlacidBlue", "Lake Placid Blue", "Verified: Lake Placid Blue Swatch Choice")
-
-            .click("@bodyCandyAppleRed")
-            .verify.containsText("@bodyChoiceCandyAppleRed", "Candy Apple Red", "Verified: Candy Apple Red Swatch Choice")
-
-            .click("@bodyDaphneBlue")
-            .verify.containsText("@bodyChoiceDaphneBlue", "Daphne Blue", "Verified: Daphne Blue Swatch Choice")
-
-            .click("@bodySurfGreen")
-            .verify.containsText("@bodyChoiceSurfGreen", "Surf Green", "Verified: Surf Green Swatch Choice")
-
-            // Neck Shape
-            .waitForElementVisible("@neckShape")
+                    })
+            })
+        return this
+    },
+    navigateToNeckShapeSelection: function () {
+        this
+            .waitForElementVisible("@neckShape", 
+                "VERIFIED: 'Neck Shape' attribute header visible")
             .click("@neckShape")
-            .waitForElementNotVisible("@bodyText")
-            .waitForElementPresent("@neckShapeMenuActive")
-            
-            .click("@neckShapeAmericanOriginalRosewood")
-            .waitForElementVisible("@closePopUp")
-            .click("@closePopUp")
-            .verify.containsText("@neckShapeChoiceAmericanOriginalRosewood", "American Original Rosewood ’60’s Jazz Bass", "Verified: American Original Rosewood ’60’s Neck Shape Choice")
-            .waitForElementNotPresent("@dialogBoxClosed")
-            
-            .click("@neckShapeRoasted")
-            .waitForElementVisible("@closePopUp")
-            .click("@closePopUp")
-            .verify.containsText("@neckShapeChoiceRoasted", "Roasted American Professional Jazz Bass", "Verified: Roasted American Professional Neck Shape Choice")
-            .waitForElementNotPresent("@dialogBoxClosed")
+            .waitForElementNotVisible("@bodyText", 
+                "VERIFIED: 'Body' flyout panel header hidden")
+            .waitForElementPresent("@neckShapeMenuActive", 
+                "VERIFIED: 'Neck Shape' flyout menu active")
+        return this
+    },
+    neckShapeCloseWindowSelection: function (data) {
+        this
+            data.forEach(test => {
+                this
+                    .click(test.neckType)
+                    .waitForElementVisible("@closePopUp", 
+                        "VERIFIED: 'Neck shape' pop-up OK button visible")
+                    .click("@closePopUp")
+                    .verify.containsText(test.neckChoice, test.neckChoiceString, 
+                        "VERIFIED: " +  test.neckChoiceString + " neck shape choice")
+                    .waitForElementNotPresent("@dialogBoxClosed", 
+                        "VERIFIED: 'Neck shape' pop-up closed")
+            })
+        return this
+    },
+    neckShapeSelection: function (data) {
+        var self = this
+        this
+            data.forEach(test => {
+                this
+                    .click(test.neckType)
 
-            .click("@neckShapeCToD")
-            .verify.containsText("@neckShapeChoiceCToD", 'C-to-D 9.5" Radius', `Verified: C-to-D 9.5" Radius Neck Shape Choice`)
+                    .getText(test.neckChoice, function (result) {
+                        var neckPick = result.value
 
-            .click("@neckShapeAmericanPro")
-            .verify.containsText("@neckShapeChoiceAmericanPro", "American Professional", "Verified: American Professional Neck Shape Choice")
+                        if (neckPick === test.neckChoiceString) {
+                            self
+                                .verify.containsText(test.neckChoice, test.neckChoiceString, 
+                                    "VERIFIED: " +  test.neckChoiceString + " neck shape choice")
+                        } else {
+                            self
+                                .verify.not.containsText(test.neckChoice, test.neckChoiceString, 
+                                    "BUG: " +  test.neckChoiceString + " incorrect neck shape choice")
+                        }
 
-            //Fingerboard
-            .waitForElementVisible("@fingerboard")
+                    })
+            })
+        return this
+    },
+    navigateToFingerboardSelection: function () {
+        this
+            .waitForElementVisible("@fingerboard", 
+                "VERIFIED: 'Fingerboard' attribute header visible")
             .click("@fingerboard")
-            .waitForElementNotVisible("@neckShapeText")
-            .waitForElementPresent("@fingerBoardMenuActive")
+            .waitForElementNotVisible("@neckShapeText", 
+                "VERIFIED: 'Neck Shape' flyout panel header hidden")
+            .waitForElementPresent("@fingerBoardMenuActive", 
+                "VERIFIED: 'Fingerboard' flyout menu active")
+        return this
+    },
+    fingerboardSelection: function (data) {
+        var self = this
+        this
+            data.forEach(test => {
+                this
+                    .click(test.fboardType)
 
-            .click("@fingerboardMaple")
-            .verify.containsText("@fingerboardChoiceMaple", "Maple", "Verified: Maple Fingerboard Choice")
- 
-            .click("@fingerboardRosewood")
-            .verify.containsText("@fingerboardChoiceRosewood", "Rosewood", "Verified: Rosewood Fingerboard Choice")
+                    .getText(test.fboardChoice, function (result) {
+                        var fboardPick = result.value
 
-            //Pickguard
-            .waitForElementVisible("@pickguard")
+                        if (fboardPick === test.fboardChoiceString) {
+                            self
+                                .verify.containsText(test.fboardChoice, test.fboardChoiceString, 
+                                    "VERIFIED: " +  test.fboardChoiceString + " fingerboard choice")
+                        } else {
+                            self
+                                .verify.not.containsText(test.fboardChoice, test.fboardChoiceString, 
+                                    "BUG: " +  test.fboardChoiceString + " incorrect fingerboard choice")
+                        }
+
+                    })
+            })
+        return this
+    },
+    navigateToPickguardSelection: function () {
+        this
+            .waitForElementVisible("@pickguard", 
+                "VERIFIED: 'Pickguard' attribute header visible")
             .click("@pickguard")
-            .waitForElementNotVisible("@fingerboardText")
-            .waitForElementPresent("@pickGuardMenuActive")
+            .waitForElementNotVisible("@fingerboardText", 
+                "VERIFIED: 'Fingerboard' flyout panel header hidden")
+            .waitForElementPresent("@pickGuardMenuActive", 
+                "VERIFIED: 'Pickguard' flyout menu active")
+        return this
+    },
+    pickguardSelection: function (data) {
+        var self = this
+        this
+            data.forEach(test => {
+                this
+                    .click(test.pickguardType)
 
-            .click("@pickguardTortoiseShell")
-            .verify.containsText("@pickguardChoiceTortoiseShell", "4 Ply Tortoise Shell", "Verified: 4 Ply Tortoise Shell Pickguard Choice")
+                    .getText(test.pickguardChoice, function (result) {
+                        var pickguardPick = result.value
 
-            .waitForElementVisible("@pickguard4PlyAgedWhitePearl")
-            .click("@pickguard4PlyAgedWhitePearl")
-            .verify.containsText("@pickguardChoice4PlyAgedWhitePearl", "4 Ply Aged White Pearl", "Verified: 4 Ply Aged White Pearl Pickguard Choice")
-
-            .waitForElementVisible("@pickguard3PlyMintGreen")
-            .click("@pickguard3PlyMintGreen")
-            .verify.containsText("@pickguardChoice3PlyMintGreen", "3 Ply Mint Green", "Verified: 3 Ply Mint Green Pickguard Choice")
-
-            .waitForElementVisible("@pickguard3PlyParchment")
-            .click("@pickguard3PlyParchment")
-            .verify.containsText("@pickguardChoice3PlyParchment", "3 Ply Parchment", "Verified: 3 Ply Parchment Pickguard Choice")
-
-            .waitForElementVisible("@pickguard3PlyBlack")
-            .click("@pickguard3PlyBlack")
-            .verify.containsText("@pickguardChoice3PlyBlack", "3 Ply Black", "Verified: 3 Ply Black Pickguard Choice")
-
-            // Pickups
-            .waitForElementVisible("@pickups")
+                        if (pickguardPick === test.pickguardChoiceString) {
+                            self
+                                .verify.containsText(test.pickguardChoice, test.pickguardChoiceString, 
+                                    "VERIFIED: " + test.pickguardChoiceString + " pickguard choice")
+                        } else {
+                            self
+                                .verify.not.containsText(test.pickguardChoice, test.pickguardChoiceString, 
+                                    "BUG: " + test.pickguardChoiceString + " incorrect pickguard choice")
+                        }
+ 
+                    })
+            })
+        return this
+    },
+    navigateToPickupsSelection: function () {
+        this
+            .waitForElementVisible("@pickups", 
+                "VERIFIED: 'Pickups' attribute header visible")
             .click("@pickups")
-            .waitForElementNotVisible("@pickguardText")
-            .waitForElementPresent("@pickupsMenuActive")
+            .waitForElementNotVisible("@pickguardText", 
+                "VERIFIED: 'Pickguard' flyout panel header hidden")
+            .waitForElementPresent("@pickupsMenuActive", 
+                "VERIFIED: 'Pickups' flyout menu active")
+        return this
+    },
+    pickupsCloseWindowSelection: function (data) {
+        this
+            data.forEach(test => {
+                this
+                    .click(test.pickupsType)
+                    .waitForElementVisible("@closePopUp", 
+                        "VERIFIED: 'Pickups' pop-up OK button visible")
+                    .click("@closePopUp")
+                    .verify.containsText(test.pickupsChoice, test.pickupsChoiceString, 
+                        "VERIFIED: " + test.pickupsChoiceString + " pickups choice")
+                    .waitForElementNotPresent("@dialogBoxClosed", 
+                        "VERIFIED: 'Pickups' pop-up closed")
+            })
+        return this
+    },
+    pickupsSelection: function (data) {
+        var self = this
+        this
+            data.forEach(test => {
+                this
+                    .click(test.pickupsType)
 
-            .click("@pickupsOriginalJazz")
-            .waitForElementVisible("@closePopUp")
-            .click("@closePopUp")
-            .verify.containsText("@pickupsChoiceOriginalJazz", "Original Jazz Bass", "Verified: Original Jazz Pickups Choice")
-            .waitForElementNotPresent("@dialogBoxClosed")
+                    .getText(test.pickupsChoice, function (result) {
+                        var pickupsPick = result.value
 
-            .click("@pickupsCustomShop60s")
-            .waitForElementVisible("@closePopUp")
-            .click("@closePopUp")
-            .verify.containsText("@pickupsChoiceCustomShop60s", "Custom Shop '60s Jazz Bass", "Verified: Custom Shop '60s Jazz Pickups Choice")
-            .waitForElementNotPresent("@dialogBoxClosed")
+                        if (pickupsPick === test.pickupsChoiceString) {
+                            self
+                                .verify.containsText(test.pickupsChoice, test.pickupsChoiceString, 
+                                    "VERIFIED: " + test.pickupsChoiceString + " pickups choice")
+                        } else {
+                            self
+                                .verify.not.containsText(test.pickupsChoice, test.pickupsChoiceString, 
+                                    "BUG: " + test.pickupsChoiceString + " incorrect pickups choice")
+                        }
 
-            .click("@pickupsPureVintage74")
-            .waitForElementVisible("@closePopUp")
-            .click("@closePopUp")
-            .verify.containsText("@pickupsChoicePureVintage74", "Pure Vintage '74 Jazz Bass", "Verified: Pure Vintage '74 Jazz Pickups Choice")
-
-            .click("@pickupsVMOD")
-            .verify.containsText("@pickupsChoiceVMOD", "V-MOD Pickups", "Verified: V-MOD Pickups Choice")
-
-            .click("@pickupsPureVintage64JB")
-            .verify.containsText("@pickupsChoicePureVintage64JB", "Pure Vintage '64 Jazz Bass", "Verified: Pure Vintage '64 Jazz Pickups Choice")
-
-            .click("@pickupsNoiseless")
-            .verify.containsText("@pickupsChoiceNoiseless", "4th Gen Noiseless", "Verified: 4th Gen Noiseless Pickups Choice")
-
-            // Tuning Machines
-            .waitForElementVisible("@tuningMachines")
+                    })
+            })
+        return this
+    },
+    tuningMachinesSelection: function () {
+        this
+            .waitForElementVisible("@tuningMachines", 
+                "VERIFIED: 'Tuning Machines' attribute header visible")
             .click("@tuningMachines")
-            .waitForElementNotVisible("@pickupsText")
-            .waitForElementPresent("@tuningMachinesMenuActive")
-
+            .waitForElementNotVisible("@pickupsText", 
+                "VERIFIED: 'Pickups' flyout panel header hidden")
+            .waitForElementPresent("@tuningMachinesMenuActive", 
+                "VERIFIED: 'Tuning Machines' flyout menu active")
             .click("@tuningMachinesAmericanProfessional")
-            .verify.containsText("@tuningMachinesChoiceAP", "American Professional", "Verified: American Professional Tuning Machines Choice")
-
-            // Bridge
-            .waitForElementVisible("@bridge")
+            .verify.containsText("@tuningMachinesChoiceAP", "American Professional", 
+                "VERIFIED: American Professional tuning machines choice")
+        return this
+    },
+    bridgeSelection: function () {
+        this
+            .waitForElementVisible("@bridge", 
+                "VERIFIED: 'Bridge' attribute header visible")
             .click("@bridge")
-            .waitForElementNotVisible("@tuningMachinesText")
-            .waitForElementPresent("@bridgeMenuActive")
-
+            .waitForElementNotVisible("@tuningMachinesText", 
+                "VERIFIED: 'Tuning Machines' flyout panel header hidden")
+            .waitForElementPresent("@bridgeMenuActive", 
+                "VERIFIED: 'Bridge' flyout menu active")
             .click("@bridgeAmericanPB")
-            .verify.containsText("@bridgeChoiceAPB", "American Professional Bass", "Verified: American Professional Tuning Machines Choice")
-
-            // Strings
-            .waitForElementVisible("@strings")
+            .verify.containsText("@bridgeChoiceAPB", "American Professional Bass", 
+                "VERIFIED: American Professional bridge Choice")
+        return this
+    },
+    stringsSelection: function () {
+        this
+            .waitForElementVisible("@strings", 
+                "VERIFIED: 'Strings' attribute header visible")
             .click("@strings")
-            .waitForElementNotVisible("@bridgeText")
-            .waitForElementPresent("@stringsMenuActive")
-
+            .waitForElementNotVisible("@bridgeText", 
+                "VERIFIED: 'Bridge' flyout panel header hidden")
+            .waitForElementPresent("@stringsMenuActive", 
+                "VERIFIED: 'Strings' flyout menu active")
             .click("@stringsGauge45101")
-            .verify.containsText("@stringsChoiceGauge45101", "0.045-0.105", "Verified: 0.045-0.105 Strings Choice")
-
-            // Case & Packaging
-            .waitForElementVisible("@caseAndPackaging")
+            .verify.containsText("@stringsChoiceGauge45101", "0.045-0.105", 
+                "VERIFIED: 0.045-0.105 strings choice")
+        return this
+    },
+    navigateToCaseAndPackagingSelection: function () {
+        this
+            .waitForElementVisible("@caseAndPackaging", 
+                "VERIFIED: 'Case And Packaging' attribute header visible")
             .click("@caseAndPackaging")
-            .waitForElementNotVisible("@stringsText")
-            .waitForElementPresent("@caseAndPackagingMenuActive")
-
+            .waitForElementNotVisible("@stringsText", 
+                "VERIFIED: 'Strings' flyout panel header hidden")
+            .waitForElementPresent("@caseAndPackagingMenuActive", 
+                "VERIFIED: 'Case And Packaging' flyout menu active")
+        return this
+    },
+    caseAndPackagingLeftSelection: function () {
+        this
             .click("@caseAndPackagingJazzBassProLeft")
-            .verify.containsText("@caseAndPackagingChoiceJazzBassProLeft", "JazzBass-Pro Case & Packaging-Left", "Verified: JazzBass-Pro Case & Packaging Choice")
+            .verify.containsText("@caseAndPackagingChoiceJazzBassProLeft", 
+                "JazzBass-Pro Case & Packaging-Left", 
+                "VERIFIED: JazzBass-Pro case & Packaging-Left choice")
+        return this
+    },
+    caseAndPackagingRightSelection: function () {
+        this
+            .click("@caseAndPackagingJazzBassProRight")
+            .verify.containsText("@caseAndPackagingChoiceJazzBassProRight", 
+                "JazzBass-Pro Case & Packaging-Right", 
+                "VERIFIED: JazzBass-Pro case & Packaging-Right choice")
+        return this
+    },
+    caseAndPackagingSelection: function (data) {
+        var self = this
+        this
+            data.forEach(test => {
+                this
+                    .click(test.caseType)
 
-            // Reset bass back to default state
+                    .getText(test.caseChoice, function (result) {
+                        var casePick = result.value
+
+                        if (casePick === test.caseChoiceString) {
+                            self
+                                .verify.containsText(test.caseChoice, 
+                                    test.caseChoiceString, 
+                                    "VERIFIED: " + test.caseChoiceString + " case & packaging choice")
+                        } else {
+                            self
+                                .verify.not.containsText(test.caseChoice, 
+                                    test.caseChoiceString, 
+                                    "BUG: " + test.caseChoiceString + " incorrect case & packaging choice")
+                        }
+
+                    })
+            })
+        return this
+    },
+    resetBassSelection: function () {
+        this
             .click("@reset")
-            .waitForElementVisible("@closePopUp")
-
+            .waitForElementVisible("@closePopUp", 
+                "VERIFIED: 'Neck shape' pop-up OK button visible")
             .click("@closePopUp")
-            .waitForElementVisible("@body")
+            .waitForElementVisible("@body", 
+                "VERIFIED: 'Body' attribute header present")
             .click("@body")
-            .verify.containsText("@bodyChoiceCharcoalFrostMetallic", "Charcoal Frost Metallic", "Verified: The 'Reset' button reset the bass back to its default state")
-
-            // Add Button
+            .verify.containsText("@bodyChoiceCharcoalFrostMetallic", "Charcoal Frost Metallic", 
+                "VERIFIED: The 'Reset' button reset the bass back to its default state")
+        return this
+    },
+    addBassSelection: function () {
+        this
             .api.refresh()
         this
-            .waitForElementPresent("@iframeLoad")
-            .waitForElementVisible("@addToCart")
+            .waitForElementVisible("@iframeLoad", 
+                "VERIFIED: 'Help' floating button visible")
+            .waitForElementVisible("@addToCart", 
+                "VERIFIED: 'Add To Cart' button visible")
             .click("@addToCart")
             .pause(3000)
-            .waitForElementVisible("@addToCartPopUp")
-            .waitForElementVisible("@closeAddToCartPopUp")
+            .waitForElementVisible("@addToCartPopUp", 
+                "VERIFIED: 'Add To Cart' pop-up visible")
+            .waitForElementVisible("@closeAddToCartPopUp", 
+                "VERIFIED: 'Add To Cart' pop-up close button visible")
             .click("@closeAddToCartPopUp")
         return this
     },
-
-    editBassWithReset: function (data) {
+    verifyBassPageUI: function (angleData, orienData, bodData, neckData1, 
+        neckData2, fboardData, pickguardData, pickupsData1, pickupsData2) {
+        this
+            .navigateToModPage()
+            // Bass Angle Button
+            .bassAngleButtonsSelection(angleData)
+            // Orientation
+            .navigateToOrientationSelection()
+            .orientationSelection(orienData)
+            // Body
+            .navigateToBodySelection()
+            .bodySelection(bodData)
+            // Neck Shape
+            .navigateToNeckShapeSelection()
+            .neckShapeCloseWindowSelection(neckData1)
+            .neckShapeSelection(neckData2)
+            // Fingerboard
+            .navigateToFingerboardSelection()
+            .fingerboardSelection(fboardData)
+            // Pickguard
+            .navigateToPickguardSelection()
+            .pickguardSelection(pickguardData)
+            // Pickups
+            .navigateToPickupsSelection()
+            .pickupsCloseWindowSelection(pickupsData1)
+            .pickupsSelection(pickupsData2)
+            // Tuning Machines
+            .tuningMachinesSelection()
+            // Bridge
+            .bridgeSelection()
+            // Strings
+            .stringsSelection()
+            // Case & Packaging
+            .navigateToCaseAndPackagingSelection()
+            .caseAndPackagingLeftSelection()
+            // Reset
+            .resetBassSelection()
+            // Add To Cart
+            .addBassSelection()
+            // Verify Cart Quantity
+            .refreshAndVerifyCartQuantity("1")
+        return this
+    },
+    editBassWithReset: function () {
         this
             .click("@shoppingCartEditBass")
-            .waitForElementPresent("@productTitle")
-            .verify.title("Jazz Bass | Mod Shop", "Verified: Jazz Bass Mod Shop Page Title")
+            .waitForElementPresent("@productTitle", 
+                "VERIFIED: Jazz Bass page product title present")
+            .verify.title("Jazz Bass | Mod Shop", 
+                "VERIFIED: Jazz Bass Mod Shop Page Title")
             .click("@reset")
-            .waitForElementVisible("@closePopUp")
+            .waitForElementVisible("@closePopUp", 
+                "VERIFIED: 'Reset' pop-up OK button visible")
             .click("@closePopUp")
-            .verify.containsText(data.bodyChoice, data.bodyChoiceString, "Verified: The 'RESET' button did not reset the bass back to its default state")
+            .verify.containsText("@bodyChoiceSilverburst", "Silverburst", 
+                "VERIFIED: The 'RESET' button did not reset the bass back to its default state")
         return this
     },
-
     editBassColor: function () {
         this
-            .waitForElementVisible("@body")
-            .waitForElementVisible("@bodyHotRodRed")
+            .waitForElementVisible("@body", 
+                "VERIFIED: 'Body' attribute header visible")
+            .waitForElementVisible("@bodyHotRodRed", 
+                "VERIFIED: 'Hot Rod Red' swatch visible")
             .click("@bodyHotRodRed")
-            .verify.containsText("@bodyChoiceHotRodRed", "Hot Rod Red", "Verified: Hot Rod Red Modified Body Color")
+            .verify.containsText("@bodyChoiceHotRodRed", "Hot Rod Red", 
+                "VERIFIED: Hot Rod Red Modified Body Color")
         return this
     },
-
     updateCart: function () {
         this
-            .waitForElementVisible("@addToCart")
+            .waitForElementVisible("@addToCart", 
+                "VERIFIED: 'Add To Cart' button visible")
             .click("@addToCart")
             .pause(3000)
-            .waitForElementVisible("@addToCartPopUp")
-            .waitForElementVisible("@clickAddToCartPopUp")
-            .click("@clickAddToCartPopUp")
-            .verify.title("Cart | My Fender", "Verified: Cart Page Title")
+            .waitForElementVisible("@addToCartPopUp", 
+                "VERIFIED: 'Add To Cart' pop-up visible")
+            .waitForElementVisible("@checkoutLink", 
+                "VERIFIED: 'Checkout' pop-up link visible")
+            .click("@checkoutLink")
+            .verify.title("Cart | My Fender", 
+                "VERIFIED: Cart Page Title")
         return this
     },
-
-    deleteBassShoppingCart: function () {
+    removeBassShoppingCart: function () {
         this
-            .waitForElementVisible("@shoppingCartDeleteBass")
-            .click("@shoppingCartDeleteBass")
+            .waitForElementVisible("@shoppingCartRemoveBass", 
+                "VERIFIED: 'Remove' link is visible")
+            .click("@shoppingCartRemoveBass")
         return this
     },
-
     verifyEmptyShoppingCart: function () {
         this
-            .verify.not.elementPresent("@shoppingCartRemovedOrderSummary", "Verified Empty Cart: The 'ORDER SUMMARY' section has been removed")
-            .verify.not.elementPresent("@shoppingCartRemovedItemImage", "Verified Empty Cart: The item image has been removed")
-            .verify.not.elementPresent("@shoppingCartRemovedItemInfo", "Verified Empty Cart: The item info has been removed")
-            .verify.not.elementPresent("@shoppingCartRemovedItemPricing", "Verified Empty Cart: The item pricing has been removed")
-            .verify.not.elementPresent("@shoppingCartRemovedQuantitySection", "Verified Empty Cart: The 'Quantity' section has been removed")
+            .verify.not.elementPresent("@shoppingCartRemovedOrderSummary", 
+                "VERIFIED Empty Cart: The 'ORDER SUMMARY' section has been removed")
+            .verify.not.elementPresent("@shoppingCartRemovedItemImage", 
+                "VERIFIED Empty Cart: The item image has been removed")
+            .verify.not.elementPresent("@shoppingCartRemovedItemInfo", 
+                "VERIFIED Empty Cart: The item info has been removed")
+            .verify.not.elementPresent("@shoppingCartRemovedItemPricing", 
+                "VERIFIED Empty Cart: The item pricing has been removed")
+            .verify.not.elementPresent("@shoppingCartRemovedQuantitySection", 
+                "VERIFIED Empty Cart: The 'Quantity' section has been removed")
         return this
     },
-
     navigateToShoppingCart: function () {
         this
             .click("@shoppingCartLink")
-            .verify.title("Cart | My Fender", "Verified: Cart Page Title")
+            .verify.title("Cart | My Fender", 
+                "VERIFIED: Cart Page Title")
         return this
     },
-
     verifyQuantitySelector: function (data) {
         this
-            .waitForElementVisible("@quantitySelector")
+            .waitForElementVisible("@quantitySelector", 
+                "VERIFIED: 'Quantity' cart counter is visible")
             .setValue("@quantitySelector", data.item)
-            .waitForElementVisible("@quantityErrorMessage")
-            .verify.elementPresent("@quantityErrorMessage", "Verified Error Message: 'Only 1 units available'. Quantity selector on " + data.quantity)
+            .waitForElementVisible("@quantityErrorMessage", 
+                "VERIFIED: 'Quantity' cart error message is visible")
+            .verify.elementPresent("@quantityErrorMessage", 
+                "VERIFIED Error Message: 'Only 1 units available'. Quantity selector on " + 
+                data.quantity)
             .pause(1000)
         return this
     },
-
     verifyBassShoppingCart: function () {
         this
-            .waitForElementVisible("@shoppingCartItemNumber")
-            .verify.containsText("@shoppingCartItemNumber", "1 Item", "Verified: Cart contains 1 item")
-            .waitForElementVisible("@shoppingCartSubTotal")
-            .verify.containsText("@shoppingCartSubTotal", "$1,899.99", "Verified: $1,899.99 Cart sub-total")
-            .waitForElementVisible("@shoppingCartShippingCost")
-            .verify.containsText("@shoppingCartShippingCost", "Free", "Verified: Free cart shipping cost")
-            .waitForElementVisible("@shoppingCartGrandTotal")
-            .verify.containsText("@shoppingCartGrandTotal", "$1,899.99", "Verified: $1,899.99 Cart grand total")
+            .waitForElementVisible("@shoppingCartItemNumber", 
+                "VERIFIED: Shopping cart 'item number' is visible")
+            .verify.containsText("@shoppingCartItemNumber", "1 Item", 
+                "VERIFIED: Cart contains 1 item")
+            .waitForElementVisible("@shoppingCartSubTotal", 
+                "VERIFIED: Shopping cart 'Subtotal' is visible")
+            .verify.containsText("@shoppingCartSubTotal", "$1,899.99", 
+                "VERIFIED: $1,899.99 cart sub-total")
+            .waitForElementVisible("@shoppingCartShippingCost", 
+                "VERIFIED: Shopping cart 'Shipping Cost' is visible")
+            .verify.containsText("@shoppingCartShippingCost", "Free", 
+                "VERIFIED: Free cart shipping cost")
+            .waitForElementVisible("@shoppingCartGrandTotal", 
+                "VERIFIED: Shopping cart 'Estimated Total' is visible")
+            .verify.containsText("@shoppingCartGrandTotal", "$1,899.99", 
+                "VERIFIED: $1,899.99 cart estimated total")
         return this
     },
-
     verify2BassShoppingCart: function () {
         this
-            .waitForElementVisible("@shoppingCartItemNumber")
-            .verify.containsText("@shoppingCartItemNumber", "2 Items", "Verified: Cart contains 2 items")
-            .waitForElementVisible("@shoppingCartSubTotal")
-            .verify.containsText("@shoppingCartSubTotal", "$3,799.98", "Verified: $3,799.98 Cart sub-total")
-            .waitForElementVisible("@shoppingCartShippingCost")
-            .verify.containsText("@shoppingCartShippingCost", "Free", "Verified: Free cart shipping cost")
-            .waitForElementVisible("@shoppingCartGrandTotal")
-            .verify.containsText("@shoppingCartGrandTotal", "$3,799.98", "Verified: $3,799.98 Cart grand total")
+            .waitForElementVisible("@shoppingCartItemNumber", 
+                "VERIFIED: Shopping cart 'item number' is visible")
+            .verify.containsText("@shoppingCartItemNumber", "2 Items", 
+                "VERIFIED: Cart contains 2 items")
+            .waitForElementVisible("@shoppingCartSubTotal", 
+                "VERIFIED: Shopping cart 'Subtotal' is visible")
+            .verify.containsText("@shoppingCartSubTotal", "$3,799.98", 
+                "VERIFIED: $3,799.98 cart sub-total")
+            .waitForElementVisible("@shoppingCartShippingCost", 
+                "VERIFIED: Shopping cart 'Shipping Cost' is visible")
+            .verify.containsText("@shoppingCartShippingCost", "Free", 
+                "VERIFIED: Free cart shipping cost")
+            .waitForElementVisible("@shoppingCartGrandTotal", 
+                "VERIFIED: Shopping cart 'Estimated Total' is visible")
+            .verify.containsText("@shoppingCartGrandTotal", "$3,799.98", 
+                "VERIFIED: $3,799.98 cart estimated total")
         return this
     },
-
     refreshAndVerifyCartQuantity: function (numString) {
+        var self = this
         this
             .api.refresh()
         this
-            .waitForElementVisible("@iframeLoad")
-            .waitForElementPresent('@fenderBrandLogo')
-            .moveToElement("@fenderBrandLogo", 10, 10)
-            .waitForElementVisible("@shoppingCartQuantity")
-            .verify.containsText("@shoppingCartQuantity", numString, "Verified: Cart contains " + numString + " items")
+            .waitForElementVisible("@iframeLoad", 
+                "VERIFIED: 'Help' floating button visible")
+            .waitForElementVisible('@fenderBrandLogo', 
+                "VERIFIED: 'Fender Logo' visible")
+            .moveToElement("@fenderBrandLogo", undefined, undefined)
+            .waitForElementVisible("@shoppingCartQuantity", 
+                "VERIFIED: 'Shopping Cart Quantity' visible")
+
+            .getText("@shoppingCartQuantity", function (result) {
+                var cartQuantity = result.value
+
+                if (cartQuantity === numString) {
+                    self
+                        .verify.containsText("@shoppingCartQuantity", numString, 
+                            "VERIFIED: Cart contains " + numString + " items")
+                } else {
+                    self
+                        .verify.not.containsText("@shoppingCartQuantity", numString, 
+                            "BUG: Cart does not contain " + numString + " items")
+                }
+
+            })
         return this
     },
-
-    navigateToModPage: function (data) {
+    navigateToModPage: function () {
         this
-            .verify.title("Mod Shop | Fender", "Verified: Mod Shop Page Title")
+            .verify.title("Shop Fender | Electric Guitars, Acoustics, Bass, Amps & More", 
+                "VERIFIED: Mod Shop Homepage Title")
 
-            // Homepage, click on the "DESIGN NOW" Bass button
-            .waitForElementPresent("@designNowButton")
-            .click("@designNowButton")
+            // Homepage, click on the "Get Started" Jazz Bass page link
+            .waitForElementPresent("@getStartedLink", 
+                "VERIFIED: 'Get Started' Jazz Bass page link present")
+            .click("@getStartedLink")
 
             // Waiting for the product title of the Jazz Bass page to be present before starting
-            .waitForElementPresent("@productTitle")
-            .verify.title("Jazz Bass | Mod Shop", "Verified: Jazz Bass Mod Shop Page Title")
+            .waitForElementPresent("@productTitle", 
+                "VERIFIED: Jazz Bass page product title present")
+            .verify.title("Jazz Bass | Mod Shop", 
+                "VERIFIED: Jazz Bass Mod Shop Page Title")
         return this
     },
-
-    bassMod: function (data) {
+    addToCartWithPopUp: function () {
+        this
+            .waitForElementVisible("@addToCart", 
+                "VERIFIED: 'Add To Cart' button visible")
+            .click("@addToCart")
+            .pause(3000)
+            .waitForElementVisible("@addToCartPopUp", 
+                "VERIFIED: 'Add To Cart' pop-up visible")
+            .waitForElementVisible("@closeAddToCartPopUp", 
+                "VERIFIED: 'Add To Cart' pop-up close button visible")
+            .click("@closeAddToCartPopUp")
+            .moveToElement("@fenderBrandLogo", undefined, undefined)
+        return this
+    },
+    resetToDefault: function () {
+        this
+            .waitForElementVisible("@reset", 
+                "VERIFIED: 'Reset' button visible")
+            .click("@reset")
+            .waitForElementVisible("@closeResetPopUp", 
+                "VERIFIED: 'Reset' pop-up OK button visible")
+            .click("@closeResetPopUp")
+        return this
+    },
+    refreshPageForPopup: function () {
         this
             // Reload page to get around the "ADD TO CART" pop-up not working
             .api.refresh()
         this
-            .waitForElementVisible("@iframeLoad")
-            .getLocationInView("@shoppingCartLink")
-
+            .waitForElementVisible("@iframeLoad", 
+                "VERIFIED: 'Help' floating button visible")
+            .moveToElement("@fenderBrandLogo", undefined, undefined)
+        return this
+    },
+    bassMod: function (data) {
+        this
+            // Reload page to get around the "ADD TO CART" pop-up not working
+            .refreshPageForPopup()
             // Orientation
-            .waitForElementVisible(data.orientation)
-            .click(data.orientation)
-            .waitForElementVisible("@orientationText")
-            .waitForElementPresent("@orientationMenuActive")
-            .click(data.orientationType)
-            .verify.containsText(data.orientationChoice, data.orientationChoiceString, "Verified: " + data.orientationChoiceString + " Orientation Choice")
-
+            .navigateToOrientationSelection()
+            .orientationSelection(data)
             // Body
-            .waitForElementVisible(data.body)
-            .click(data.body)
-            .getLocationInView("@reset")
-            .waitForElementNotVisible("@orientationText")
-            .waitForElementPresent("@bodyMenuActive")
-            .click(data.bodyType)
-            .verify.containsText(data.bodyChoice, data.bodyChoiceString, "Verified: " + data.bodyChoiceString + " Body Choice")
-
+            .navigateToBodySelection()
+            .bodySelection(data)
             // Neck Shape
-            .waitForElementVisible(data.neckShape)
-            .click(data.neckShape)
-            .waitForElementNotVisible("@bodyText")
-            .waitForElementPresent("@neckShapeMenuActive")
-            .click(data.neckShapeType)
-            .verify.containsText(data.neckShapeChoice, data.neckShapeChoiceString, "Verified: " +  data.neckShapeChoiceString + " Neck Shape Choice")
-
+            .navigateToNeckShapeSelection()
+            .neckShapeSelection(data)
             // Fingerboard
-            .waitForElementVisible(data.fingerboard)
-            .click(data.fingerboard)
-            .waitForElementNotVisible("@neckShapeText")
-            .waitForElementPresent("@fingerBoardMenuActive")
-            .click(data.fingerboardType)
-            .verify.containsText(data.fingerboardChoice, data.fingerboardChoiceString, "Verified: " +  data.fingerboardChoiceString + " Fingerboard Choice")
-
+            .navigateToFingerboardSelection()
+            .fingerboardSelection(data)
             // Pickguard
-            .waitForElementVisible(data.pickguard)
-            .click(data.pickguard)
-            .waitForElementNotVisible("@fingerboardText")
-            .waitForElementPresent("@pickGuardMenuActive")
-            .click(data.pickguardType)
-            .verify.containsText(data.pickguardChoice, data.pickguardChoiceString, "Verified: " + data.pickguardChoiceString + " Pickguard Choice")
-
+            .navigateToPickguardSelection()
+            .pickguardSelection(data)
             // Pickups
-            .waitForElementVisible(data.pickups)
-            .click(data.pickups)
-            .waitForElementNotVisible("@pickguardText")
-            .waitForElementPresent("@pickupsMenuActive")
-            .click(data.pickupsType)
-            .verify.containsText(data.pickupsChoice, data.pickupsChoiceString, "Verified: " + data.pickupsChoiceString + " Pickups Choice")
-
+            .navigateToPickupsSelection()
+            .pickupsSelection(data)
             // Tuning Machines
-            .waitForElementVisible(data.tuningMachines)
-            .click(data.tuningMachines)
-            .waitForElementNotVisible("@pickupsText")
-            .waitForElementPresent("@tuningMachinesMenuActive")
-            .click(data.tuningMachinesType)
-            .verify.containsText(data.tuningMachinesChoice, data.tuningMachinesChoiceString, "Verified: " + data.tuningMachinesChoiceString + " Tuning Machines Choice")
-
+            .tuningMachinesSelection()
             // Bridge
-            .waitForElementVisible(data.bridge)
-            .click(data.bridge)
-            .waitForElementNotVisible("@tuningMachinesText")
-            .waitForElementPresent("@bridgeMenuActive")
-            .click(data.bridgeType)
-            .verify.containsText(data.bridgeChoice, data.bridgeChoiceString, "Verified: " + data.bridgeChoiceString + " Bridge Choice")
-
+            .bridgeSelection()
             // Strings
-            .waitForElementVisible(data.strings)
-            .click(data.strings)
-            .waitForElementNotVisible("@bridgeText")
-            .waitForElementPresent("@stringsMenuActive")
-            .click(data.stringsType)
-            .verify.containsText(data.stringsChoice, data.stringsChoiceString, "Verified: " + data.stringsChoiceString + " Strings Choice")
-
+            .stringsSelection()
             // Case & Packaging
-            .waitForElementVisible(data.caseAndPackaging)
-            .click(data.caseAndPackaging)
-            .waitForElementNotVisible("@stringsText")
-            .waitForElementPresent("@caseAndPackagingMenuActive")
-            .click(data.caseAndPackagingType)
-            .verify.containsText(data.caseAndPackagingChoice, data.caseAndPackagingChoiceString, "Verified: " + data.caseAndPackagingChoiceString + " Case & Packaging Choice")
-
+            .navigateToCaseAndPackagingSelection()
+            .caseAndPackagingSelection(data)
             // Add To Cart Button
-            .waitForElementVisible(data.addToCart)
-            .click(data.addToCart)
-            .pause(3000)
-            .waitForElementVisible("@addToCartPopUp")
-            .waitForElementVisible("@closeAddToCartPopUp")
-            .click("@closeAddToCartPopUp")
-            .moveToElement("@fenderBrandLogo", 10, 10)
-
+            .addToCartWithPopUp()
             // Reset
-            .waitForElementVisible(data.reset)
-            .click(data.reset)
-            .waitForElementVisible(data.closeResetPopUp)
-            .click(data.closeResetPopUp)
+            .resetToDefault()
+        return this
+    },
+    verifyCartDetailsAndRemoval: function (modData1, modData2) {
+        this
+            .navigateToModPage()
+            .bassMod(modData1)
+            .bassMod(modData2)
+        this
+            .refreshAndVerifyCartQuantity("2")
+            .navigateToShoppingCart()
+            .verify2BassShoppingCart()
+            .removeBassShoppingCart()
+            .verifyBassShoppingCart()
+            .removeBassShoppingCart()
+            .verifyEmptyShoppingCart()
+        return this
+    },
+    quantitySelection: function (data) {
+        this
+            data.forEach(test => {
+                this.verifyQuantitySelector(test)
+            })
+        return this
+    },
+    verifyCartQuantitySelector: function (editData, quantityData) {
+        this
+            .navigateToModPage()
+            .bassMod(editData)
+            .refreshAndVerifyCartQuantity("1")
+            .navigateToShoppingCart()
+            .verifyBassShoppingCart()
+            .quantitySelection(quantityData)
+            .verifyBassShoppingCart()
+        return this
+    },
+    verifyEditAndUpdateCart: function (editData) {
+        this
+            .navigateToModPage()
+            .bassMod(editData)
+            .refreshAndVerifyCartQuantity("1")
+            .navigateToShoppingCart()
+            .editBassWithReset()
+            .editBassColor()
+            .updateCart()
         return this
     }
 }
@@ -519,7 +738,7 @@ module.exports = {
             selector: "//div[@class='cart-totals']",
             locateStrategy: 'xpath'
         },
-        shoppingCartDeleteBass: {
+        shoppingCartRemoveBass: {
             selector: "(//a[contains(@class,'remove-product')])[1]",
             locateStrategy: 'xpath'
         },
@@ -552,15 +771,15 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         shoppingCartLink: {
-            selector: "//a[@class='minicart-link']",
+            selector: "//div[@class='minicart utility-icon']",
             locateStrategy: 'xpath'
         },
-        designNowButton: {
-            selector: "//div[6]//a[text()='DESIGN NOW']",
+        getStartedLink: {
+            selector: "(//a[contains(@href,'jazz-bass')])[7]",
             locateStrategy: 'xpath'
         },
         productTitle: {
-            selector: "//div[text()='Jazz Bass']",
+            selector: "//div[contains(text(),'Jazz Bass')]",
             locateStrategy: 'xpath'
         },
         closePopUp: {
@@ -568,7 +787,8 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         addToCart: {
-            selector: "//div[@class='fc-add-to-cart-container']//div[@class='fc-button-pair fc-outline-target']",
+            selector: "//div[@class='fc-add-to-cart-container']" +
+                "//div[@class='fc-button-pair fc-outline-target']",
             locateStrategy: 'xpath'
         },
         addToCartPopUp: {
@@ -576,7 +796,8 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         addToCartPopUpImageCheckout: {
-            selector: "//img[@alt='Your mod shop design has been added to your cart. Complete your set up with the following gear. Checkout.']",
+            selector: "//img[@alt='Your mod shop design has been added to your cart. " +
+                "Complete your set up with the following gear. Checkout.']",
             locateStrategy: 'xpath'
         },
         addToCartPopUpImageGear: {
@@ -591,12 +812,13 @@ module.exports = {
             selector: "//img[@class='shq_exit']",
             locateStrategy: 'xpath'
         },
-        clickAddToCartPopUp: {
+        checkoutLink: {
             selector: "//div[@class='shq_modal']/div/a",
             locateStrategy: 'xpath'
         },
         goToShoppingCart: {
-            selector: "(//div[@id='shq_modal_fender_modshop_modal_-_live']/div[@class='shq_modal']//a)[1]",
+            selector: "(//div[@id='shq_modal_fender_modshop_modal_-_live']" +
+                "/div[@class='shq_modal']//a)[1]",
             locateStrategy: 'xpath'
         },
         reset: {
@@ -896,23 +1118,32 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         neckShapePaintedHeadstock: {
-            selector: "//span[@title='American Pro Painted Headstock Black Jazz Bass']//span[@class='fc-swatch']",
+            selector: "//span[@title='American Pro Painted Headstock Black Jazz Bass']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         neckShapeAmericanPro: {
-            selector: "//div[@class='fc-attribute-selector fc-attribute-selector-alias-neck_shape fc-layout-image']//span[@title='American Professional']//span[@class='fc-swatch']",
+            selector: "//div[@class='fc-attribute-selector " +
+                "fc-attribute-selector-alias-neck_shape " +
+                "fc-layout-image']//span[@title='American Professional']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         neckShapeRoasted: {
-            selector: "//span[@title='Roasted American Professional Jazz Bass']//span[@class='fc-swatch']",
+            selector: "//span[@title='Roasted American Professional Jazz Bass']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         neckShapeChoiceAP: {
-            selector: "//div[@class='fc-attribute-selector fc-attribute-selector-alias-neck_shape fc-layout-image']//div[@class='fc-selected-value-label'][contains(text(),'American Professional')]",
+            selector: "//div[@class='fc-attribute-selector " +
+                "fc-attribute-selector-alias-neck_shape " +
+                "fc-layout-image']//div[@class='fc-selected-value-label']" +
+                "[contains(text(),'American Professional')]",
             locateStrategy: 'xpath'
         },
         neckShapeAmericanOriginalRosewood: {
-            selector: "//span[@title='American Original Rosewood ’60’s Jazz Bass']//span[@class='fc-swatch']",
+            selector: "//span[@title='American Original Rosewood ’60’s Jazz Bass']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         neckShapeChoiceAmericanOriginalRosewood: {
@@ -940,7 +1171,8 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         fingerboardPaintedHeadstockBlackMaple: {
-            selector: "//span[@title='Painted Headstock Black Maple']//span[@class='fc-swatch']",
+            selector: "//span[@title='Painted Headstock Black Maple']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         fingerboardMaple: {
@@ -1064,11 +1296,16 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         tuningMachinesAmericanProfessional: {
-            selector: "//div[@class='fc-attribute-selector fc-attribute-selector-alias-tuningmachines fc-layout-image']//span[@class='fc-swatch']",
+            selector: "//div[@class='fc-attribute-selector " +
+                "fc-attribute-selector-alias-tuningmachines " +
+                "fc-layout-image']//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         tuningMachinesChoiceAP: {
-            selector: "//div[@class='fc-attribute-selector fc-attribute-selector-alias-tuningmachines fc-layout-image']//div[@class='fc-selected-value-label'][contains(text(),'American Professional')]",
+            selector: "//div[@class='fc-attribute-selector " +
+                "fc-attribute-selector-alias-tuningmachines " +
+                "fc-layout-image']//div[@class='fc-selected-value-label']" +
+                "[contains(text(),'American Professional')]",
             locateStrategy: 'xpath'
         },
         bridge: {
@@ -1076,7 +1313,8 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         bridgeAmericanPB: {
-            selector: "//span[@title='American Professional Bass']//span[@class='fc-swatch']",
+            selector: "//span[@title='American Professional Bass']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         bridgeChoiceAPB: {
@@ -1100,11 +1338,13 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         caseAndPackagingJazzBassProRight: {
-            selector: "//span[@title='JazzBass-Pro Case & Packaging-Right']//span[@class='fc-swatch']",
+            selector: "//span[@title='JazzBass-Pro Case & Packaging-Right']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         caseAndPackagingJazzBassProLeft: {
-            selector: "//span[@title='JazzBass-Pro Case & Packaging-Left']//span[@class='fc-swatch']",
+            selector: "//span[@title='JazzBass-Pro Case & Packaging-Left']" +
+                "//span[@class='fc-swatch']",
             locateStrategy: 'xpath'
         },
         caseAndPackagingChoiceJazzBassProRight: {
@@ -1184,43 +1424,53 @@ module.exports = {
             locateStrategy: 'xpath'
         },
         orientationMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-orientation fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-orientation " + 
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         bodyMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-body fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-body " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         neckShapeMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-neck_shape fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-neck_shape " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         fingerBoardMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-neckoption fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-neckoption " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         pickGuardMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-pickguardmaterial fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-pickguardmaterial " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         pickupsMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-pickups fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-pickups " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         tuningMachinesMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-tuningmachines fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-tuningmachines " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         bridgeMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-bridge fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-bridge " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         stringsMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-stringsselection fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-stringsselection " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         caseAndPackagingMenuActive: {
-            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-case_&_packaging fc-nav-flyout-active']",
+            selector: "//li[@class='fc-nav-flyout-ca fc-ca-alias-case_&_packaging " +
+                "fc-nav-flyout-active']",
             locateStrategy: 'xpath'
         },
         dialogBoxClosed: {
