@@ -1,6 +1,8 @@
 # Fender-Mod-Shop
 Solo project for the DevMountain Software QA Bootcamp. Manual and automated testing of The Fender Mod Shop website. Testing focuses on the user workflow and functionality between the bass modification page and the shopping cart page. Browser automation created using Nightwatch.js.
 
+website: https://shop.fender.com/en-US/mod-shop.html
+
 #### Instructions:
 Install NodeJS (includes npm): https://nodejs.org/en/download/
 
