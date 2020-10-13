@@ -21,5 +21,5 @@ cd Fender-Mod-Shop
 ```
 Execute the "Fender-Mod-Shop" automation:
 ```
-nightwatch /tests/fenderModShop.js
+nightwatch tests/fenderModShop.js
 ```
