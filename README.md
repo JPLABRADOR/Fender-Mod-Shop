@@ -19,6 +19,10 @@ Navigate to the newly cloned directory:
 ```
 cd Fender-Mod-Shop
 ```
+Install chromedriver for the project:
+```
+npm install chromedriver --save-dev
+```
 Execute the "Fender-Mod-Shop" automation:
 ```
 nightwatch tests/fenderModShop.js
